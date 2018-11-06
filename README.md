@@ -1,2 +1,2 @@
-# ce303_assignment
-My assignment for Advanced Programming
+# CE303 Assignment
+My assignment for Advanced Programming which is to make a multiplayer board game.
