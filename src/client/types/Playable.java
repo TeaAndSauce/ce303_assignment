@@ -8,4 +8,7 @@ public abstract class Playable
     public abstract void useFreedomCard();
     public abstract void useReplacementCard();
     public abstract void useDoubleMoveCard();
+    public abstract void connect(String ip, int port);
+    public abstract void disconnect();
+    public abstract void sendMessage(String msg);
 }

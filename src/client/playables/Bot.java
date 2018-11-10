@@ -39,4 +39,19 @@ public class Bot extends Playable
     public void useDoubleMoveCard() {
 
     }
+
+    @Override
+    public void connect(String ip, int port) {
+
+    }
+
+    @Override
+    public void disconnect() {
+
+    }
+
+    @Override
+    public void sendMessage(String msg) {
+
+    }
 }
