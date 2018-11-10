@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="93b6c5d2-64d2-4550-bc27-917c73f86db7" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change beforePath="$PROJECT_DIR$/src/client/playables/Bot.java" afterPath="$PROJECT_DIR$/src/client/playables/Bot.java" />
-      <change beforePath="$PROJECT_DIR$/src/client/playables/Client.java" afterPath="$PROJECT_DIR$/src/client/playables/Client.java" />
-      <change beforePath="$PROJECT_DIR$/src/client/types/Playable.java" afterPath="$PROJECT_DIR$/src/client/types/Playable.java" />
-      <change beforePath="$PROJECT_DIR$/src/server/Server.java" afterPath="$PROJECT_DIR$/src/server/Server.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -351,12 +346,12 @@
       <updated>1541530867859</updated>
       <workItem from="1541530871324" duration="14932000" />
       <workItem from="1541549803485" duration="674000" />
-      <workItem from="1541873211290" duration="4365000" />
+      <workItem from="1541873211290" duration="4642000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="19971000" />
+    <option name="totallyTimeSpent" value="20248000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
