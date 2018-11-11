@@ -71,7 +71,11 @@ public class Game
             throw new InvalidMoveException(row, col);
         // Make the move if valid
         else
+        {
+            // Place move and update list of plays
             state[row][col] = player;
+            plays.get(player).add(new Pair(row, col));
+        }
     }
 
     /**

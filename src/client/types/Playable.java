@@ -11,4 +11,6 @@ public abstract class Playable
     public abstract void connect(String ip, int port);
     public abstract void disconnect();
     public abstract void sendMessage(String msg);
+    public abstract String listen();
+    public abstract int[][] parseArray(String message);
 }

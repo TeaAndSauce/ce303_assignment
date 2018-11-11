@@ -54,4 +54,14 @@ public class Bot extends Playable
     public void sendMessage(String msg) {
 
     }
+
+    @Override
+    public String listen() {
+        return null;
+    }
+
+    @Override
+    public int[][] parseArray(String message) {
+        return new int[0][];
+    }
 }

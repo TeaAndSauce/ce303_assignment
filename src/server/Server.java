@@ -11,14 +11,16 @@ import java.net.Socket;
 
 public class Server
 {
-    public static int PORT = 1337;
-
+    private int PORT = 1337;
     private Playable[] players;
     private ServerSocket serversocket;
     private Socket clientsocket;
     private BufferedReader in;
     private PrintWriter out;
     public boolean online = false;
+    private int playersConnected = 0;
+    private int spectatorsConnected = 0;
+    private int botsConnected = 0;
 
     // Only a single server should run
     public static void main(String[] args) {
@@ -66,6 +68,8 @@ public class Server
             in = new BufferedReader(new InputStreamReader(clientsocket.getInputStream()));
         } catch (IOException e) {
             System.out.println("Unable to create stream writer/reader");
+            System.out.println("Server closing down..");
+            return;
         }
 
         // Server is now online
@@ -85,7 +89,7 @@ public class Server
         try {
             message = in.readLine();
         } catch (IOException e) {
-            System.out.println("Could not listen to client.");
+            System.out.println("Client has stopped responding.");
         }
         return message;
     }

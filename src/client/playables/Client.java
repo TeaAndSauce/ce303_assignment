@@ -1,5 +1,6 @@
 package client.playables;
 
+import client.graphics.Interface;
 import client.types.Playable;
 
 import java.io.BufferedReader;
@@ -17,9 +18,22 @@ public class Client extends Playable
     private PrintWriter out;
     private BufferedReader in;
     private boolean connected = false;
+    private Interface ui;
+
+    Client()
+    {
+        ui = new Interface(6, 10, 1000, 500);
+
+        // Placeholders
+        ui.place(0, 1, 1);
+        ui.place(4, 8, 2);
+        ui.place(4, 7, 2);
+        ui.place(5, 3, 3);
+    }
 
     public static void main(String[] args) {
         Client c = new Client();
+
         if (Client.LOCAL)
             c.connect("localhost", 1337);
 
@@ -41,11 +55,14 @@ public class Client extends Playable
 
     @Override
     public void placeMove(int row, int col) {
-
+        sendMessage("" + row + " " + col);
     }
 
     @Override
     public int[][] getState() {
+        sendMessage("state");
+        String response = listen();
+
         return new int[0][];
     }
 
@@ -104,5 +121,23 @@ public class Client extends Playable
         {
             out.println(msg);
         }
+    }
+
+    @Override
+    public String listen() {
+        String message = null;
+        try {
+            message = in.readLine();
+        } catch (IOException e) {
+            System.out.println("Could not receive message from server.");
+        }
+        return message;
+    }
+
+    @Override
+    public int[][] parseArray(String message) {
+        String toParse = message.substring(1, message.length()-1);
+        // TODO: Look at Questions.txt
+        return new int[0][];
     }
 }
