@@ -22,7 +22,7 @@ public class Client extends Playable
 
     Client()
     {
-        ui = new Interface(6, 10, 1000, 500);
+        ui = new Interface(20, 35, 1000, 500);
 
         // Placeholders
         ui.place(0, 1, 1);
@@ -35,11 +35,20 @@ public class Client extends Playable
         Client c = new Client();
 
         if (Client.LOCAL)
+        {
             c.connect("localhost", 1337);
+            c.sendMessage("client");
+        }
 
         // Basic one-way chat system
         while (true)
         {
+            // Player needs to request initial game board
+            // Player makes a move when its their turn
+            //      - Server broadcasts whos turn it is
+            // Buttons in the UI lock when its not their turn
+            //      - UI shows all possible moves when it is their turn
+
             Scanner input = new Scanner(System.in);
             System.out.println("Enter a message to send: ");
             String message = input.nextLine();

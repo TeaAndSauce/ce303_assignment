@@ -41,6 +41,9 @@ public class Game
         // List containing all positions currently
         // occupied each specific player.
         plays = new HashMap<>();
+        plays.put(1, new ArrayList<>());
+        plays.put(2, new ArrayList<>());
+        plays.put(3, new ArrayList<>());
 
         // New HEIGHTxWIDTH board, default will be
         // 6x10. This is to make the board scalable
