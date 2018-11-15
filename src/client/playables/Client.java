@@ -35,10 +35,7 @@ public class Client extends Playable
         Client c = new Client();
 
         if (Client.LOCAL)
-        {
             c.connect("localhost", 1337);
-            c.sendMessage("client");
-        }
 
         // Basic one-way chat system
         while (true)

@@ -9,8 +9,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Server
 {
@@ -26,7 +25,8 @@ public class Server
     private int botsConnected = 0;
     private int playerTurn = 1;
     private Game game;
-    private List<PrintWriter> writers;
+    private Map<Integer, PrintWriter> writers;
+    private boolean acceptingClients = false;
 
     // Only a single server should run
     public static void main(String[] args) {
@@ -49,7 +49,7 @@ public class Server
         game = new Game();
 
         // Init writers list
-        writers = new ArrayList<>();
+        writers = new HashMap<>();
 
         // Attempt to create server socket
         try {
@@ -63,53 +63,79 @@ public class Server
         // Server is now online
         online = true;
 
+        // Initialise waiting timer for 1 minute
+        acceptingClients = true;
+        QueueTimer task = new QueueTimer(this);
+        Timer timer = new Timer();
+        timer.schedule(task, 60000);
+
         while (online)
         {
-            // Allow client connections
-            try {
-                clientsocket = serversocket.accept();
-
-                // client should send a message straight away to identify
-                // If it is a client, bot or spectator
-
-                ClientHandler handler = new ClientHandler(clientsocket, this, playersConnected+1);
-                Thread test = new Thread(handler);
-                test.start();
-                System.out.println("Client " + (playersConnected+1) + " has joined the game.");
-            } catch (IOException e) {
-                System.out.println("Client socket not initialised.");
-                continue;
+            // While we are accepting clients
+            while (acceptingClients)
+            {
+                // Accept connections
+                acceptConnections();
             }
-
-            // Initialise stream writer & reader
-            try {
-                out = new PrintWriter(clientsocket.getOutputStream(), true);
-                in = new BufferedReader(new InputStreamReader(clientsocket.getInputStream()));
-                writers.add(out);
-            } catch (IOException e) {
-                System.out.println("Unable to create stream writer/reader for client " + (playersConnected+1));
-                continue;
-            }
-            playersConnected++;
         }
+
+        // Once all players have connected, we wish to start a new game
+        game.newGame(playersConnected);
     }
 
     // TODO: Test this
     public void sendMessage(int player, String message)
     {
         // Playing with fire here..
-        if (writers.get(player-1).equals(null))
+        if (writers.get(player).equals(null))
             System.out.println("CANNOT SEND MESSAGE TO NULL SOCKET");
         else
-            writers.get(player-1).println(message);
+            writers.get(player).println(message);
     }
 
     // TODO: Test this
     public void broadcast(String message)
     {
-        for (PrintWriter writer : writers)
+        for (PrintWriter writer : writers.values())
             if (!writer.equals(null))
                 writer.println(message);
+    }
+
+    public void stopAcceptingClients()
+    {
+        acceptingClients = false;
+    }
+
+    public void acceptConnections()
+    {
+        // Allow client connections
+        try {
+            clientsocket = serversocket.accept();
+
+            // The server should not know if the connected player is
+            // a bot or a human player. However it should know if the
+            // connection was made by a spectator
+
+            ClientHandler handler = new ClientHandler(clientsocket, this, playersConnected+1);
+            Thread test = new Thread(handler);
+            test.start();
+            System.out.println("Client " + (playersConnected+1) + " has joined the game.");
+        } catch (IOException e) {
+            System.out.println("Client socket not initialised.");
+            return;
+        }
+
+        // Initialise stream writer & reader
+        try {
+            out = new PrintWriter(clientsocket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(clientsocket.getInputStream()));
+            // Store this stream writer to a list
+            writers.put(playersConnected+1, out);
+        } catch (IOException e) {
+            System.out.println("Unable to create stream writer/reader for client " + (playersConnected+1));
+            return;
+        }
+        playersConnected++;
     }
 
     public void place(int x, int y, int player)
@@ -117,12 +143,48 @@ public class Server
         game.place(player, x, y, false);
     }
 
+    public String formatGameState(int[][] state)
+    {
+        String result = "";
+        for (int row = 0; row < state.length; row++)
+        {
+            for (int col = 0; col < state[0].length; col++)
+            {
+                result += state[row][col] + " ";
+            }
+            result += "| ";
+        }
+        return result;
+    }
+
+    public void disconnectClient(int player, Socket socket)
+    {
+        // Close their write stream
+        // And set their stream to null
+        writers.get(player).close();
+        writers.put(player, null);
+
+
+        // Remove players moves from the game
+        game.removePlayer(player);
+        // Which should set all their tiles to have the value of 0 (neutral)
+
+        // Send the game to all existing clients
+        broadcast(formatGameState(game.getState()));
+
+        // We do not need to update the player's number, as all client connections
+        // will be denied if the game has already started
+    }
+
     public void stop() throws IOException {
         in.close();
         out.close();
-        for (PrintWriter writer : writers)
+        for (PrintWriter writer : writers.values())
             writer.close();
         clientsocket.close();
         serversocket.close();
     }
 }
+
+// Closing streams and setting writers to null
+//  make this a safe operation

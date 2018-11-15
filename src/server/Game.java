@@ -127,8 +127,8 @@ public class Game
                 // Get bounds
                 int startPosX = (thisPosX - 1 < 0) ? thisPosX : thisPosX-1;
                 int startPosY = (thisPosY - 1 < 0) ? thisPosY : thisPosY-1;
-                int endPosX =   (thisPosX + 1 > WIDTH) ? thisPosX : thisPosX+1;
-                int endPosY =   (thisPosY + 1 > HEIGHT) ? thisPosY : thisPosY+1;
+                int endPosX =   (thisPosX + 1 > WIDTH-1) ? thisPosX : thisPosX+1;
+                int endPosY =   (thisPosY + 1 > HEIGHT-1) ? thisPosY : thisPosY+1;
 
                 // Look at all neighbours within bounds
                 for (int rowNum=startPosX; rowNum<=endPosX; rowNum++)
@@ -174,11 +174,11 @@ public class Game
      * in random parts of the board. Players cannot
      * be on the same spot.
      */
-    public void newGame()
+    public void newGame(int playersConnected)
     {
         clear();
         Random r = new Random();
-        for (int i=1; i <= 3; i++ )
+        for (int i=1; i <= playersConnected; i++ )
         {
             // Get all free positions
             List<Pair<Integer, Integer>> moves = getAllFreePositions();
@@ -238,5 +238,24 @@ public class Game
     public int[][] getState()
     {
         return cloneState(state);
+    }
+
+    /**
+     * Removes a specific player from the
+     * board. This is called when the
+     * player disconnects to free up space.
+     *
+     * @param player
+     *      The player to remove
+     */
+    public void removePlayer(int player)
+    {
+        for (int row = 0; row < state.length; row++)
+            for (int col = 0; col < state[0].length; col++)
+                if (state[row][col] == player)
+                    state[row][col] = 0;
+
+        // Clear their list of moves
+        plays.get(player).clear();
     }
 }
