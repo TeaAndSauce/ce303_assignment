@@ -3,6 +3,7 @@ package client.playables;
 import client.graphics.Interface;
 import client.types.Playable;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,16 +20,11 @@ public class Client extends Playable
     private BufferedReader in;
     private boolean connected = false;
     private Interface ui;
+    private Color color;
+    private int player;
 
     Client()
     {
-        ui = new Interface(20, 35, 1000, 500);
-
-        // Placeholders
-        ui.place(0, 1, 1);
-        ui.place(4, 8, 2);
-        ui.place(4, 7, 2);
-        ui.place(5, 3, 3);
     }
 
     public static void main(String[] args) {
@@ -55,7 +51,7 @@ public class Client extends Playable
                 break;
             }
             else
-                c.sendMessage(message);
+                c.sendMessage("chat " + message);
         }
     }
 
@@ -107,6 +103,25 @@ public class Client extends Playable
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        // Get our player number
+        try {
+            String playerNumber = in.readLine();
+            player = Integer.valueOf(playerNumber.trim());
+            System.out.println("You are player " + player + ".");
+        } catch (IOException e) {
+            System.out.println("Could not set our player number: " + player);
+        }
+
+        // Create UI
+        ui = new Interface(player, 6, 10, 1000, 500);
+        // Placeholders
+        ui.place(0, 1, 1);
+        ui.place(4, 8, 2);
+        ui.place(4, 7, 2);
+        ui.place(5, 3, 3);
+        ui.place(2, 5, 4);
+        ui.place(3, 5, 5);
 
         // Client is now connected
         connected = true;

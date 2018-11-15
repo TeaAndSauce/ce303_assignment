@@ -21,6 +21,7 @@ public class Game
     private Map<Integer, String> pieces;
     private Map<Integer, List<Pair<Integer, Integer>>> plays;
     private int[][] state;
+    private boolean running = false;
     public static int HEIGHT = 6;
     public static int WIDTH = 10;
 
@@ -37,6 +38,8 @@ public class Game
         pieces.put(1, "R");
         pieces.put(2, "G");
         pieces.put(3, "B");
+        pieces.put(4, "Y");
+        pieces.put(5, "P");
 
         // List containing all positions currently
         // occupied each specific player.
@@ -44,6 +47,8 @@ public class Game
         plays.put(1, new ArrayList<>());
         plays.put(2, new ArrayList<>());
         plays.put(3, new ArrayList<>());
+        plays.put(4, new ArrayList<>());
+        plays.put(5, new ArrayList<>());
 
         // New HEIGHTxWIDTH board, default will be
         // 6x10. This is to make the board scalable
@@ -192,6 +197,7 @@ public class Game
             // Add to players current pieces on the board
             plays.get(i).add(new Pair(choice.getKey(), choice.getValue()));
         }
+        running = true;
     }
 
     /**
@@ -257,5 +263,10 @@ public class Game
 
         // Clear their list of moves
         plays.get(player).clear();
+    }
+
+    public boolean isRunning()
+    {
+        return running;
     }
 }

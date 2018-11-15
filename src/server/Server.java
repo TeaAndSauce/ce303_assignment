@@ -14,7 +14,6 @@ import java.util.*;
 public class Server
 {
     private int PORT = 1337;
-    private Playable[] players;
     private ServerSocket serversocket;
     private Socket clientsocket;
     private BufferedReader in;
@@ -22,7 +21,6 @@ public class Server
     public boolean online = false;
     private int playersConnected = 0;
     private int spectatorsConnected = 0;
-    private int botsConnected = 0;
     private int playerTurn = 1;
     private Game game;
     private Map<Integer, PrintWriter> writers;
@@ -69,18 +67,22 @@ public class Server
         Timer timer = new Timer();
         timer.schedule(task, 60000);
 
-        while (online)
+        // While we are accepting clients
+        while (acceptingClients)
         {
-            // While we are accepting clients
-            while (acceptingClients)
-            {
-                // Accept connections
-                acceptConnections();
-            }
+            // Accept connections
+            acceptConnections();
         }
 
         // Once all players have connected, we wish to start a new game
         game.newGame(playersConnected);
+
+        // Perform updating and communication
+        // while the game is in progress
+        while(game.isRunning())
+        {
+
+        }
     }
 
     // TODO: Test this
@@ -112,10 +114,6 @@ public class Server
         try {
             clientsocket = serversocket.accept();
 
-            // The server should not know if the connected player is
-            // a bot or a human player. However it should know if the
-            // connection was made by a spectator
-
             ClientHandler handler = new ClientHandler(clientsocket, this, playersConnected+1);
             Thread test = new Thread(handler);
             test.start();
@@ -135,6 +133,11 @@ public class Server
             System.out.println("Unable to create stream writer/reader for client " + (playersConnected+1));
             return;
         }
+
+        // Send client their player number
+        System.out.println("Sending client " + (playersConnected+1) + " their player number.");
+        if (!out.equals(null))
+            out.println("" + (playersConnected+1));
         playersConnected++;
     }
 
@@ -152,9 +155,10 @@ public class Server
             {
                 result += state[row][col] + " ";
             }
-            result += "| ";
+            if (row < state.length-1)
+                result += "| ";
         }
-        return result;
+        return result.trim();
     }
 
     public void disconnectClient(int player, Socket socket)

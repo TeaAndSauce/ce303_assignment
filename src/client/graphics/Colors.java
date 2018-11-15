@@ -10,4 +10,6 @@ public class Colors
     static Color RED = new Color(231, 76, 60);
     static Color GREEN = new Color(46, 204, 113);
     static Color BLANK = new Color(44, 62, 80);
+    static Color YELLOW = new Color(249, 202, 36);
+    static Color PURPLE = new Color(95, 39, 205);
 }

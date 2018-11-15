@@ -34,33 +34,31 @@ public class GamePanel extends JPanel
     {
         // Show possible moves for this client
         possible = new ArrayList<>();
-
         // Initialise player maps
         playerLabels = new HashMap<>();
         playerColors = new HashMap<>();
-
         // Initialise size of panel
         this.setSize(width, height);
         this.setMinimumSize(new Dimension(width, height));
         this.setMaximumSize(new Dimension(width, height));
         this.setPreferredSize(new Dimension(width, height));
-
         // Player colors
         playerColors.put(0, Colors.BLANK);
         playerColors.put(1, Colors.RED);
         playerColors.put(2, Colors.BLUE);
         playerColors.put(3, Colors.GREEN);
-
+        playerColors.put(4, Colors.YELLOW);
+        playerColors.put(5, Colors.PURPLE);
         // Player labels
         playerLabels.put(0, "");
         playerLabels.put(1, "R");
         playerLabels.put(2, "G");
         playerLabels.put(3, "B");
-
+        playerLabels.put(4, "Y");
+        playerLabels.put(5, "P");
         // Dimensions
         gameRows = rows;
         gameCols = cols;
-
         // Calculate square sizes
         gamestate = new int[rows][cols];
         squaresHeight = (this.getHeight()) / rows;

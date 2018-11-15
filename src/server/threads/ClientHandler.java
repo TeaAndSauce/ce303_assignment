@@ -45,7 +45,7 @@ public class ClientHandler implements Runnable
 
             // If its player chat, dont ignore
             if (command.equals("chat"))
-                System.out.println("Client [" + playerNumber + "]: " + command);
+                System.out.println("Client [" + playerNumber + "]: " + message.replace("chat ", ""));
 
             // Ignore commands if its not this clients turn
             else if (server.getTurn() != playerNumber)

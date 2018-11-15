@@ -7,9 +7,32 @@ public class SidePanel extends JPanel
 {
 
     Color color;
-    SidePanel(Color col)
+    Color buttons;
+    JPanel north, south;
+
+    GameButton replace, free, doub;
+    SidePanel(Color col, Color buttonCol)
     {
         this.color = col;
+        this.buttons = buttonCol;
+        setLayout(new BorderLayout());
+
+        // Jpanels
+        north = new JPanel();
+        south = new JPanel();
+        north.setBackground(this.color);
+        south.setBackground(this.color);
+        south.setLayout(new BoxLayout(south, BoxLayout.Y_AXIS));
+        add(north, BorderLayout.NORTH);
+        add(south, BorderLayout.SOUTH);
+
+        // Buttons
+        replace = new GameButton("Replace", buttons, this);
+        free = new GameButton("Freedom", buttons, this);
+        doub = new GameButton("Double", buttons, this);
+        south.add(replace);
+        south.add(free);
+        south.add(doub);
     }
 
     void setColor(Color col)
