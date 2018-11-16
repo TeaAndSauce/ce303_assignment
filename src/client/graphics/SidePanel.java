@@ -6,16 +6,20 @@ import java.awt.*;
 public class SidePanel extends JPanel
 {
 
-    Color color;
-    Color buttons;
-    JPanel north, south;
+    private Color color;
+    private Color buttons;
+    private JPanel north, south;
+    private int width, height;
 
     GameButton replace, free, doub;
-    SidePanel(Color col, Color buttonCol)
+    SidePanel(Color col, Color buttonCol, int width, int height)
     {
         this.color = col;
         this.buttons = buttonCol;
-        setLayout(new BorderLayout());
+        this.width = width;
+        this.height = height;
+
+        setPreferredSize(new Dimension(width, height));
 
         // Jpanels
         north = new JPanel();
@@ -23,22 +27,20 @@ public class SidePanel extends JPanel
         north.setBackground(this.color);
         south.setBackground(this.color);
         south.setLayout(new BoxLayout(south, BoxLayout.Y_AXIS));
-        add(north, BorderLayout.NORTH);
-        add(south, BorderLayout.SOUTH);
+        south.setPreferredSize(new Dimension(this.width, this.height/2));
+        north.setPreferredSize(new Dimension(this.width, this.height/2));
 
         // Buttons
-        replace = new GameButton("Replace", buttons, this);
-        free = new GameButton("Freedom", buttons, this);
-        doub = new GameButton("Double", buttons, this);
+        replace = new GameButton("Replace", buttonCol, south.getWidth(), 25);
+        free = new GameButton("Freedom", buttonCol, south.getWidth(), 25);
+        doub = new GameButton("Double", buttonCol, south.getWidth(), 25);
+
+        // Add components
         south.add(replace);
         south.add(free);
         south.add(doub);
-    }
-
-    void setColor(Color col)
-    {
-        this.color = col;
-        this.repaint();
+        add(north, BorderLayout.NORTH);
+        add(south, BorderLayout.SOUTH);
     }
 
     @Override

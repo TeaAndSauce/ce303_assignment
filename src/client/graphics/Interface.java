@@ -34,14 +34,11 @@ public class Interface
         // Initialisation
         frame = new JFrame("Multiplayer Game");
         game = new GamePanel(rows, cols, gamepanelwidth, height);
-        sidepanel = new SidePanel(Colors.BLANK, colors.get(player));
+        sidepanel = new SidePanel(Colors.BLANK, colors.get(player), sidepanelwidth, frame.getHeight());
 
         // Assign location
         frame.add(game, BorderLayout.CENTER);
         frame.add(sidepanel, BorderLayout.EAST);
-
-        // Side panel sizes
-        sidepanel.setPreferredSize(new Dimension(sidepanelwidth, height));
 
         // Pack and display
         frame.setResizable(false);

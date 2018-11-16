@@ -168,7 +168,6 @@ public class Server
         writers.get(player).close();
         writers.put(player, null);
 
-
         // Remove players moves from the game
         game.removePlayer(player);
         // Which should set all their tiles to have the value of 0 (neutral)

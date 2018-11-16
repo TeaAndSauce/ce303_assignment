@@ -16,5 +16,6 @@ public class QueueTimer extends TimerTask
         // We need to make the server stop accepting
         // clients once the timer has stopped
         server.stopAcceptingClients();
+        System.out.println("Server has stopped accepting connections.");
     }
 }

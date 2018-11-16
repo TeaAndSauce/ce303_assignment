@@ -1,0 +1,7 @@
+1. Style UI Buttons
+    - SidePanel width needs to be set
+2. Add UI functionality
+3. Allow a player to make a move
+4. Deny connects after queue timer
+    - Unless they are a spectator
+5. Make the server broadcast player moves

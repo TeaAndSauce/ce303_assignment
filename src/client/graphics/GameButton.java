@@ -7,29 +7,26 @@ public class GameButton extends JButton
 {
     private Color color;
     private String label;
-    private SidePanel panel;
+    private int w, h;
 
-    GameButton(String label, Color color, SidePanel panel)
+    GameButton(String label, Color color, int width, int height)
     {
         this.color = color;
         this.label = label;
-        this.panel = panel;
+        this.h = height;
+        this.w = width;
 
+        setPreferredSize(new Dimension(w, h));
+        setMinimumSize(new Dimension(w, h));
+        setMaximumSize(new Dimension(w, h));
         setText(label);
-        setPreferredSize(new Dimension(panel.getWidth(), 25));
-        setMinimumSize(new Dimension(panel.getWidth(), 25));
-        setBackground(color);
-        repaint();
-
-        this.setBorderPainted(false);
-        this.setFocusPainted(false);
     }
 
     @Override
     public void paintComponent(Graphics g)
     {
         g.setColor(color);
-        g.fillRect(0, 0, getWidth(), getHeight());
+        g.fillRect(0, 0, this.w, 35);
         super.paintComponent(g);
     }
 }
