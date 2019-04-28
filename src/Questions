@@ -1,9 +1,0 @@
-Questions
-
-- How does a client know which player they are?
-- What if a player disconnects mid-game?
-    - Does a bot take over?
-- How will the server send the state?
-    1,2,3,4,5,6|1,2,3,4,5,6|1,2,3,4,5,6
-    split("|") to get all the rows
-    split(",") to get each item in the row
